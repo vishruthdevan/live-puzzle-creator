@@ -22,3 +22,8 @@ const main = () => {
       alert("Error accessing camera: " + err);
     });
 };
+
+function updateCanvas() {
+  CONTEXT.drawImage(VIDEO, 0, 0);
+  window.requestAnimationFrame(updateCanvas);
+}
