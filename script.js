@@ -2,6 +2,7 @@ let CANVAS = null;
 let CONTEXT = null;
 let SCALER = 0.8;
 let SIZE = { x: 0, y: 0, width: 0, height: 0, rows: 3, cols: 3 };
+let PIECES = [];
 
 const main = () => {
   CANVAS = document.getElementById("cnv");
@@ -26,7 +27,11 @@ const main = () => {
 };
 
 function updateCanvas() {
-  CONTEXT.drawImage(VIDEO, 0, 0);
+  CONTEXT.drawImage(VIDEO, SIZE.x, SIZE.y, SIZE.width, SIZE.height);
+
+  for (let i = 0; i < PIECES.length; i++) {
+    PIECES[i].draw(CONTEXT);
+  }
   window.requestAnimationFrame(updateCanvas);
 }
 
@@ -46,6 +51,14 @@ function handleResize() {
   SIZE.y = window.innerHeight / 2 - SIZE.height / 2;
 }
 
+function initializePieces() {
+  for (let i = 0; i < SIZE.rows; i++) {
+    for (let j = 0; j < SIZE.cols; j++) {
+      PIECES.push(new Piece(i, j));
+    }
+  }
+}
+
 class Piece {
   constructor(rowIn, colIn) {
     this.rowIn = rowIn;
@@ -54,5 +67,10 @@ class Piece {
     this.y = SIZE.y + (SIZE.height * this.rowIn) / SIZE.rows;
     this.width = SIZE.width / SIZE.cols;
     this.height = SIZE.height / SIZE.rows;
+  }
+
+  draw(context) {
+    context.beginPath();
+    context.rect(this.x, this.y, this.width, this.height);
   }
 }
