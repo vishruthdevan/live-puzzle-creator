@@ -1,7 +1,7 @@
 let CANVAS = null;
 let CONTEXT = null;
 let SCALER = 0.8;
-let SIZE = { x: 0, y: 0, width: 0, height: 0 };
+let SIZE = { x: 0, y: 0, width: 0, height: 0, rows: 3, cols: 3 };
 
 const main = () => {
   CANVAS = document.getElementById("cnv");
@@ -44,4 +44,15 @@ function handleResize() {
   SIZE.height = resizer * VIDEO.videoHeight;
   SIZE.x = window.innerWidth / 2 - SIZE.width / 2;
   SIZE.y = window.innerHeight / 2 - SIZE.height / 2;
+}
+
+class Piece {
+  constructor(rowIn, colIn) {
+    this.rowIn = rowIn;
+    this.colIn = colIn;
+    this.x = SIZE.x + (SIZE.width * this.colIn) / SIZE.cols;
+    this.y = SIZE.y + (SIZE.height * this.rowIn) / SIZE.rows;
+    this.width = SIZE.width / SIZE.cols;
+    this.height = SIZE.height / SIZE.rows;
+  }
 }
