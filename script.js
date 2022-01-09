@@ -29,7 +29,7 @@ const main = () => {
 
 function updateCanvas() {
   // CONTEXT.drawImage(VIDEO, SIZE.x, SIZE.y, SIZE.width, SIZE.height);
-
+  CONTEXT.clearRect(0, 0, CANVAS.width, CANVAS.height);
   for (let i = 0; i < PIECES.length; i++) {
     PIECES[i].draw(CONTEXT);
   }
