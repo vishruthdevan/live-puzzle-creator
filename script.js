@@ -18,6 +18,7 @@ const main = () => {
       VIDEO.onloadeddata = function () {
         handleResize();
         window.addEventListener("resize", handleResize);
+        initializePieces(SIZE.rows, SIZE.cols);
         updateCanvas();
       };
     })
@@ -27,7 +28,7 @@ const main = () => {
 };
 
 function updateCanvas() {
-  CONTEXT.drawImage(VIDEO, SIZE.x, SIZE.y, SIZE.width, SIZE.height);
+  // CONTEXT.drawImage(VIDEO, SIZE.x, SIZE.y, SIZE.width, SIZE.height);
 
   for (let i = 0; i < PIECES.length; i++) {
     PIECES[i].draw(CONTEXT);
@@ -51,11 +52,24 @@ function handleResize() {
   SIZE.y = window.innerHeight / 2 - SIZE.height / 2;
 }
 
-function initializePieces() {
+function initializePieces(rows, cols) {
+  SIZE.rows = rows;
+  SIZE.cols = cols;
   for (let i = 0; i < SIZE.rows; i++) {
     for (let j = 0; j < SIZE.cols; j++) {
       PIECES.push(new Piece(i, j));
     }
+  }
+}
+
+function randomizePieces() {
+  for (let i = 0; i < PIECES.length; i++) {
+    let loc = {
+      x: Math.random() * (CANVAS.width - PIECES[i].width),
+      y: Math.random() * (CANVAS.height - PIECES[i].height),
+    };
+    PIECES[i].x = loc.x;
+    PIECES[i].y = loc.y;
   }
 }
 
