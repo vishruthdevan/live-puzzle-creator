@@ -3,11 +3,12 @@ let CONTEXT = null;
 let SCALER = 0.8;
 let SIZE = { x: 0, y: 0, width: 0, height: 0, rows: 3, cols: 3 };
 let PIECES = [];
+let SELECTED_PIECE = null;
 
 const main = () => {
   CANVAS = document.getElementById("cnv");
   CONTEXT = CANVAS.getContext("2d");
-
+  addEventListeners();
   let promise = navigator.mediaDevices.getUserMedia({ video: true });
   promise
     .then(function (signal) {
@@ -26,6 +27,22 @@ const main = () => {
       alert("Error accessing camera: " + err);
     });
 };
+
+function onMouseDown(evt) {
+  SELECTED_PIECE = getPressedPiece(evt);
+  if (SELECTED_PIECE != null) {
+    SELECTED_PIECE.offset = {
+      x: evt.x - SELECTED_PIECE.x,
+      y: evt.y - SELECTED_PIECE.y,
+    };
+  }
+}
+
+function addEventListeners() {
+  CANVAS.addEventListener("mousedown", onMouseDown);
+  CANVAS.addEventListener("mouseup", onMouseUp);
+  CANVAS.addEventListener("mousemove", onMouseMove);
+}
 
 function updateCanvas() {
   // CONTEXT.drawImage(VIDEO, SIZE.x, SIZE.y, SIZE.width, SIZE.height);
