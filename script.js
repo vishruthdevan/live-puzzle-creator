@@ -1,6 +1,6 @@
 let CANVAS = null;
 let CONTEXT = null;
-let SCALER = 0.8;
+let SCALER = 0.6;
 let SIZE = { x: 0, y: 0, width: 0, height: 0, rows: 3, cols: 3 };
 let PIECES = [];
 let SELECTED_PIECE = null;
@@ -30,6 +30,7 @@ const main = () => {
 
 function onMouseDown(evt) {
   SELECTED_PIECE = getPressedPiece(evt);
+  console.log(SELECTED_PIECE);
   if (SELECTED_PIECE != null) {
     SELECTED_PIECE.offset = {
       x: evt.x - SELECTED_PIECE.x,
@@ -37,6 +38,8 @@ function onMouseDown(evt) {
     };
   }
 }
+
+function onMouseUp(evt) {}
 
 function addEventListeners() {
   CANVAS.addEventListener("mousedown", onMouseDown);
@@ -46,6 +49,7 @@ function addEventListeners() {
 
 function updateCanvas() {
   // CONTEXT.drawImage(VIDEO, SIZE.x, SIZE.y, SIZE.width, SIZE.height);
+  // CONTEXT.drawImage(VIDEO, 0, 0);
   CONTEXT.clearRect(0, 0, CANVAS.width, CANVAS.height);
   for (let i = 0; i < PIECES.length; i++) {
     PIECES[i].draw(CONTEXT);
@@ -60,7 +64,7 @@ function handleResize() {
   let resizer =
     SCALER *
     Math.min(
-      window.innerWidth / VIDEO.innerWidth,
+      window.innerWidth / VIDEO.videoWidth,
       window.innerHeight / VIDEO.videoHeight
     );
   SIZE.width = resizer * VIDEO.videoWidth;
@@ -102,6 +106,20 @@ class Piece {
 
   draw(context) {
     context.beginPath();
+
+    context.drawImage(
+      VIDEO,
+      (this.colIn * VIDEO.videoWidth) / SIZE.cols,
+      (this.rowIn * VIDEO.videoHeight) / SIZE.rows,
+      VIDEO.videoWidth / SIZE.cols,
+      VIDEO.videoHeight / SIZE.rows,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    );
+
     context.rect(this.x, this.y, this.width, this.height);
+    context.stroke();
   }
 }
