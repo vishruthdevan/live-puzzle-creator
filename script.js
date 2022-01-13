@@ -28,6 +28,20 @@ const main = () => {
     });
 };
 
+function getPressedPiece(loc) {
+  for (let i = 0; i < PIECES.length; i++) {
+    if (
+      loc.x > PIECES[i].x &&
+      loc.x < PIECES[i].x + PIECES[i].width &&
+      loc.y > PIECES[i].y &&
+      loc.y < PIECES[i].y + PIECES[i].height
+    ) {
+      return PIECES[i];
+    }
+  }
+  return null;
+}
+
 function onMouseDown(evt) {
   SELECTED_PIECE = getPressedPiece(evt);
   console.log(SELECTED_PIECE);
@@ -36,6 +50,13 @@ function onMouseDown(evt) {
       x: evt.x - SELECTED_PIECE.x,
       y: evt.y - SELECTED_PIECE.y,
     };
+  }
+}
+
+function onMouseMove(evt) {
+  if (SELECTED_PIECE != null) {
+    SELECTED_PIECE.x = evt.x - SELECTED_PIECE.offset.x;
+    SELECTED_PIECE.y = evt.y - SELECTED_PIECE.offset.y;
   }
 }
 
