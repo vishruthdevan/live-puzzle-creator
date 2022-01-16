@@ -29,7 +29,7 @@ const main = () => {
 };
 
 function getPressedPiece(loc) {
-  for (let i = 0; i < PIECES.length; i++) {
+  for (let i = PIECES.length - 1; i >= 0; i--) {
     if (
       loc.x > PIECES[i].x &&
       loc.x < PIECES[i].x + PIECES[i].width &&
@@ -44,8 +44,12 @@ function getPressedPiece(loc) {
 
 function onMouseDown(evt) {
   SELECTED_PIECE = getPressedPiece(evt);
-  console.log(SELECTED_PIECE);
   if (SELECTED_PIECE != null) {
+    const index = PIECES.indexOf(SELECTED_PIECE);
+    if (index >= 0) {
+      PIECES.splice(index, 1);
+      PIECES.push(SELECTED_PIECE);
+    }
     SELECTED_PIECE.offset = {
       x: evt.x - SELECTED_PIECE.x,
       y: evt.y - SELECTED_PIECE.y,
@@ -60,7 +64,12 @@ function onMouseMove(evt) {
   }
 }
 
-function onMouseUp(evt) {}
+function onMouseUp(evt) {
+  if (SELECTED_PIECE != null && SELECTED_PIECE.isClose()) {
+    SELECTED_PIECE.snap();
+  }
+  SELECTED_PIECE = null;
+}
 
 function addEventListeners() {
   CANVAS.addEventListener("mousedown", onMouseDown);
@@ -123,6 +132,8 @@ class Piece {
     this.y = SIZE.y + (SIZE.height * this.rowIn) / SIZE.rows;
     this.width = SIZE.width / SIZE.cols;
     this.height = SIZE.height / SIZE.rows;
+    this.xCorrect = this.x;
+    this.yCorrect = this.y;
   }
 
   draw(context) {
