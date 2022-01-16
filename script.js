@@ -154,4 +154,28 @@ class Piece {
     context.rect(this.x, this.y, this.width, this.height);
     context.stroke();
   }
+
+  isClose() {
+    if (
+      distance(
+        { x: this.x, y: this.y },
+        { x: this.xCorrect, y: this.yCorrect }
+      ) <
+      this.width / 5
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  snap() {
+    this.x = this.xCorrect;
+    this.y = this.yCorrect;
+  }
+}
+
+function distance(p1, p2) {
+  return Math.sqrt(
+    (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y)
+  );
 }
