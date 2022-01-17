@@ -64,17 +64,34 @@ function onMouseMove(evt) {
   }
 }
 
-function onMouseUp(evt) {
+function onMouseUp() {
   if (SELECTED_PIECE != null && SELECTED_PIECE.isClose()) {
     SELECTED_PIECE.snap();
   }
   SELECTED_PIECE = null;
 }
 
+function onTouchStart(evt) {
+  let loc = { x: evt.touches[0].clientX, y: evt.touches[0].clientY };
+  onMouseDown(loc);
+}
+
+function onTouchEnd() {
+  onMouseUp();
+}
+
+function onTouchMove(evt) {
+  let loc = { x: evt.touches[0].clientX, y: evt.touches[0].clientY };
+  onMouseMove(loc);
+}
+
 function addEventListeners() {
   CANVAS.addEventListener("mousedown", onMouseDown);
   CANVAS.addEventListener("mouseup", onMouseUp);
   CANVAS.addEventListener("mousemove", onMouseMove);
+  CANVAS.addEventListener("touchstart", onTouchStart);
+  CANVAS.addEventListener("touchend", onTouchEnd);
+  CANVAS.addEventListener("touchmove", onTouchMove);
 }
 
 function updateCanvas() {
@@ -161,7 +178,7 @@ class Piece {
         { x: this.x, y: this.y },
         { x: this.xCorrect, y: this.yCorrect }
       ) <
-      this.width / 5
+      this.width / 3
     ) {
       return true;
     }
