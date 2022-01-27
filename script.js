@@ -4,6 +4,8 @@ let SCALER = 0.6;
 let SIZE = { x: 0, y: 0, width: 0, height: 0, rows: 3, cols: 3 };
 let PIECES = [];
 let SELECTED_PIECE = null;
+let START_TIME = null;
+let END_TIME = null;
 
 const main = () => {
   CANVAS = document.getElementById("cnv");
@@ -27,6 +29,24 @@ const main = () => {
       alert("Error accessing camera: " + err);
     });
 };
+
+function setDifficulty() {
+  let diff = document.getElementById("difficulty").ariaValueMax;
+  switch (diff) {
+    case "easy":
+      initializePieces(3, 3);
+      break;
+    case "medium":
+      initializePieces(5, 5);
+      break;
+    case "hard":
+      initializePieces(10, 10);
+      break;
+    case "insane":
+      initializePieces(40, 25);
+      break;
+  }
+}
 
 function getPressedPiece(loc) {
   for (let i = PIECES.length - 1; i >= 0; i--) {
