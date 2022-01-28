@@ -22,7 +22,7 @@ const main = () => {
                 handleResize();
                 window.addEventListener("resize", handleResize);
                 initializePieces(SIZE.rows, SIZE.cols);
-                updateCanvas();
+                updateGame();
             };
         })
         .catch(function (err) {
@@ -52,6 +52,13 @@ function restart() {
     START_TIME = new Date().getTime();
     END_TIME = null;
     randomizePieces();
+}
+
+function updateTime() {
+    let now = new Date().getTime();
+    if (START_TIME != null) {
+        document.getElementById("time").innerHTML = now - START_TIME;
+    }
 }
 
 function getPressedPiece(loc) {
@@ -120,7 +127,7 @@ function addEventListeners() {
     CANVAS.addEventListener("touchmove", onTouchMove);
 }
 
-function updateCanvas() {
+function updateGame() {
     // CONTEXT.drawImage(VIDEO, 0, 0);
     CONTEXT.clearRect(0, 0, CANVAS.width, CANVAS.height);
     CONTEXT.globalAlpha = 0.1;
@@ -130,7 +137,9 @@ function updateCanvas() {
     for (let i = 0; i < PIECES.length; i++) {
         PIECES[i].draw(CONTEXT);
     }
-    window.requestAnimationFrame(updateCanvas);
+
+    updateTime();
+    window.requestAnimationFrame(updateGame);
 }
 
 function handleResize() {
