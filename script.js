@@ -61,6 +61,10 @@ function updateTime() {
             document.getElementById("time").innerHTML = formatTime(
                 now - END_TIME
             );
+        } else {
+            document.getElementById("time").innerHTML = formatTime(
+                now - START_TIME
+            );
         }
     }
 }
